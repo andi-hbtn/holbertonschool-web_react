@@ -1,0 +1,16 @@
+.App-header{
+  width: 100%;
+  overflow: hidden;
+}
+
+.App-header >img , .App-header > h1{
+  float: left;
+}
+
+.App-body{
+  height: 200px;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+}
+
+.App-footer > p{text-align: center;}
