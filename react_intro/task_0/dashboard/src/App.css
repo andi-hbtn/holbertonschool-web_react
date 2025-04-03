@@ -1,16 +1,29 @@
-.App-header{
-  width: 100%;
-  overflow: hidden;
+:root {
+  --principal-color: #e14852;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
-.App-header >img , .App-header > h1{
-  float: left;
+.App-header {
+  display: flex;
+  color: var(--principal-color);
+  align-items: center;
+  border-bottom: 4px solid var(--principal-color);
+
 }
 
-.App-body{
+.App-header img {
+  width: 200px;
   height: 200px;
-  border-top: 1px solid #000000;
-  border-bottom: 1px solid #000000;
+  padding-bottom: 20px;
 }
 
-.App-footer > p{text-align: center;}
+.App-body {
+  margin: 50px 0 350px 60px;
+}
+
+.App-footer {
+  display: flex;
+  justify-content: center;
+  border-top: 4px solid var(--principal-color);
+  font-style: italic;
+}

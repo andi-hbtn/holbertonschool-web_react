@@ -1,2 +1,1 @@
-# holbertonschool-web_react
-react web
+Read Me for react_intro
