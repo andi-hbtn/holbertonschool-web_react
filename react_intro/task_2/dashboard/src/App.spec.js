@@ -14,4 +14,21 @@ test("renders 'School Dashboard' h1 element", () => {
 
     const imgElement = screen.getByRole("img"); 
     expect(imgElement).toBeInTheDocument();
+
+
+    // 2 input fields (email + password)
+    const inputs = screen.getAllByRole("textbox"); // email is "textbox"
+    const passwordInput = screen.getByLabelText(/password/i);
+    expect(inputs.length).toBe(1); // only 1 textbox (email)
+    expect(passwordInput).toBeInTheDocument();
+
+    // 2 labels (Email + Password)
+    const emailLabel = screen.getByLabelText(/email/i);
+    const passwordLabel = screen.getByLabelText(/password/i);
+    expect(emailLabel).toBeInTheDocument();
+    expect(passwordLabel).toBeInTheDocument();
+
+    // Button with text "Ok"
+    const button = screen.getByRole("button", { name: /ok/i });
+    expect(button).toBeInTheDocument();
 });
