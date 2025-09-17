@@ -5,11 +5,9 @@ const getCurrentYear = () => {
 
 const getFooterCopy = (isIndex) => {
     if (isIndex) {
-        const str = "Holberton School";
-        return <span dangerouslySetInnerHTML={{ __html: str }} />;
+        return "Holberton School";
     } else {
-        const str = "Holberton School main dashboard";
-        return <span dangerouslySetInnerHTML={{ __html: str }} />;
+        return "Holberton School main dashboard";
     }
 }
 
