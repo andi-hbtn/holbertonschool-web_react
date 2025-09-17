@@ -1,1 +1,0 @@
-README per react-component 
