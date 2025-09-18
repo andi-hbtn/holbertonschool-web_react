@@ -1,9 +1,9 @@
-import { render, screen,fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Notifications from "./Notifications.jsx";
 
 test("Notifications.jsx test", () => {
     render(<Notifications />);
-    const notificationTitle = screen.getByText(/Here is the list of notifications/i);
+    const notificationTitle = screen.getByText("Here is the list of notifications");
     expect(notificationTitle).toBeInTheDocument();
 
     const button = screen.getByRole('button');
@@ -16,7 +16,7 @@ test("Notifications.jsx test", () => {
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => { });
 
     // 2. Marrim butonin sipas aria-label="Close"
-    const closeButton = screen.getByRole('button', { name: "Close" });
+    const closeButton = screen.getByRole("button", { name: "Close" });
 
     //Simulojme nje klikim te butonit
     fireEvent.click(closeButton);
