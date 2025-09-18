@@ -25,4 +25,6 @@ test("Notifications.jsx test", () => {
 
     // 6. Pastrimi i spy
     consoleSpy.mockRestore();
+
+    console.log("OK");
 });
