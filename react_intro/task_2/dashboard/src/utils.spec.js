@@ -1,6 +1,6 @@
 import { getCurrentYear, getFooterCopy, getLatestNotification } from "./utils.jsx";
 
-desccribe("Utils function", () => {
+describe("Utils function", () => {
     test("getCurrentYear return the current year", () => {
         const year = getCurrentYear();
         const expectedYear = new Date().getFullYear();
