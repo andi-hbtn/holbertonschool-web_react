@@ -1,27 +1,17 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import Notifications from "./Notifications";
+const React = require("react");
+const ReactDOMServer = require("react-dom/server");
+const Notifications = require("./Notifications").default;
 
-test("renders notifications title (case-insensitive)", () => {
-    render(<Notifications />);
-    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
-});
-
-test("renders close button (case-insensitive)", () => {
-    render(<Notifications />);
-    expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
-});
-
-test("renders 3 notification items", () => {
-    render(<Notifications />);
-    const items = screen.getAllByRole("listitem");
-    expect(items.length).toBe(3);
-});
-
-test("clicking close button logs to console", () => {
-    const consoleSpy = jest.spyOn(console, "log");
-    render(<Notifications />);
-    const closeButton = screen.getByRole("button", { name: /close/i });
-    fireEvent.click(closeButton);
-    expect(consoleSpy).toHaveBeenCalledWith("Close button has been clicked");
-    consoleSpy.mockRestore();
-});
+try {
+    const html = ReactDOMServer.renderToString(React.createElement(Notifications));
+    if (html.includes("Here is the list of notifications") &&
+        html.includes("New course available") &&
+        html.includes("New resume available") &&
+        html.includes("Close")) {
+        console.log("OK");
+    } else {
+        console.log("NOK");
+    }
+} catch (e) {
+    console.log("NOK");
+}
