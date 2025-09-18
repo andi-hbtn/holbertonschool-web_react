@@ -3,7 +3,7 @@ import Notifications from "./Notifications.jsx";
 
 test("Notifications.jsx test", () => {
     render(<Notifications />);
-    const notificationTitle = screen.getByText('Here is the list of notifications');
+    const notificationTitle = screen.getByText(/Here is the list of notifications/i);
     expect(notificationTitle).toBeInTheDocument();
 
     const button = screen.getByRole('button');
