@@ -1,17 +1,18 @@
-const React = require("react");
-const ReactDOMServer = require("react-dom/server");
-const Notifications = require("./Notifications").default;
+import { render, screen, fireEvent } from "@testing-library/react";
+import Notifications from "./Notifications";
 
-try {
-    const html = ReactDOMServer.renderToString(React.createElement(Notifications));
-    if (html.includes("Here is the list of notifications") &&
-        html.includes("New course available") &&
-        html.includes("New resume available") &&
-        html.includes("Close")) {
-        console.log("OK");
-    } else {
-        console.log("NOK");
-    }
-} catch (e) {
-    console.log("NOK");
-}
+test("renders title, list, and button", () => {
+    render(<Notifications />);
+
+    expect(screen.getByText(/here is the list of notifications/i)).toBeInTheDocument();
+    const items = screen.getAllByRole("listitem");
+    expect(items.length).toBe(3);
+
+    const button = screen.getByRole("button", { name: /close/i });
+    expect(button).toBeInTheDocument();
+
+    const consoleSpy = jest.spyOn(console, "log");
+    fireEvent.click(button);
+    expect(consoleSpy).toHaveBeenCalledWith("Close button has been clicked");
+    consoleSpy.mockRestore();
+});
