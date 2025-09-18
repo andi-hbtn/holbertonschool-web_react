@@ -1,1 +1,1 @@
-echo "https://andi-hbtn/github.io/holbertonschool-web_react/" > holberton-dashboard.txt
+https://andi-hbtn/github.io/holbertonschool-web_react/
