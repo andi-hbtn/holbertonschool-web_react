@@ -4,7 +4,7 @@ import Notifications from "./Notifications";
 describe("Notifications component", () => {
     test("renders the notifications title", () => {
         render(<Notifications />);
-        const title = screen.getByText(/Here is the list of notifications/i);
+        const title = screen.getByText(/here is the list of notifications/i)
         expect(title).toBeInTheDocument();
     });
 
