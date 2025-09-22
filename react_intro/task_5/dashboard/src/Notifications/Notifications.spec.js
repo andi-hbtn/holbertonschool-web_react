@@ -1,3 +1,5 @@
+/* eslint-env jest */
+/* global test, expect, jest */
 import { render, screen, fireEvent } from "@testing-library/react";
 import Notifications from "./Notifications.jsx";
 

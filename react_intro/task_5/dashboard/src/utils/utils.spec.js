@@ -1,3 +1,5 @@
+/* eslint-env jest */
+/* global test, expect , describe*/
 import { getCurrentYear, getFooterCopy, getLatestNotification } from "../../../../task_2/dashboard/src/utils.jsx";
 
 describe("Utils function", () => {

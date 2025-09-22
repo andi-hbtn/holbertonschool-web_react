@@ -1,3 +1,5 @@
+/* eslint-env jest */
+/* global test, expect */
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
@@ -12,7 +14,7 @@ test("renders 'School Dashboard' h1 element", () => {
     const footerText = screen.getByText(/copyright/i);
     expect(footerText).toBeInTheDocument();
 
-    const imgElement = screen.getByRole("img"); 
+    const imgElement = screen.getByRole("img");
     expect(imgElement).toBeInTheDocument();
 
 
