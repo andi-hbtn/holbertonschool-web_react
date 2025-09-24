@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import Notification from '../Notifications/Notification';
+import Notification from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
