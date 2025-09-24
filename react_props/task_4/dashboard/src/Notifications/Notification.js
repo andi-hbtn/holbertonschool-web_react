@@ -1,6 +1,6 @@
 import React from 'react';
 import './Notification.css';
-import closeIcon from '../assets/close-icon.png';
+import closeIcon from '../assets/close-button.png';
 import { getLatestNotification } from '../utils/util';
 import NotificationItem from './NotificationItem';
 import PropTypes from 'prop-types';
@@ -21,12 +21,12 @@ function Notification({ displayDrawer }) {
                         position: 'absolute',
                         right: 20,
                         border: 'none'
-                    }} aria-label='Close' onClick={handledClick}><img src={closeIcon} alt='Close icon'/></button>
+                    }} aria-label='Close' onClick={handledClick}><img src={closeIcon} alt='Close icon' /></button>
                     <p>Here is the list of notifications</p>
                     <ul>
                         <NotificationItem type="default" value="New course available" />
                         <NotificationItem type="urgent" value="New resume available" />
-                        <NotificationItem type='urgent' html={ getLatestNotification() } />
+                        <NotificationItem type='urgent' html={getLatestNotification()} />
                     </ul>
                 </div>
             )}
