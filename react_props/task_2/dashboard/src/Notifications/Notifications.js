@@ -1,18 +1,12 @@
 import React from 'react';
 import NotificationItem from './NotificationItem';
 
-const notificationsList = [
-    { id: 1, type: 'default', value: 'New course available' },
-    { id: 2, type: 'urgent', value: 'New resume available' },
-    { id: 3, type: 'urgent', html: { __html: 'Urgent requirement - complete by EOD' } },
-];
-
-function Notifications() {
+function Notifications({ notifications }) {
     return (
         <div className="Notifications">
             <p>Here is the list of notifications</p>
             <ul>
-                {notificationsList.map((notif) => (
+                {notifications.map((notif) => (
                     <NotificationItem
                         key={notif.id}
                         type={notif.type}
@@ -24,5 +18,9 @@ function Notifications() {
         </div>
     );
 }
+
+Notifications.defaultProps = {
+    notifications: [],
+};
 
 export default Notifications;
