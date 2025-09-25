@@ -12,7 +12,7 @@ function App() {
   ];
   return (
     <>
-      <Notification notifications={notificationsList} />
+      <Notifications notifications={notificationsList} />
       <div className="App">
         <Header />
         <Login />
