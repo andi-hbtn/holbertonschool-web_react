@@ -3,7 +3,7 @@ import './Notifications.css';
 import closeIcon from '../assets/close-button.png';
 import { getLatestNotification } from '../utils/utils';
 
-function Notification() {
+function Notifications() {
     return (
         <div className='Notifications'>
             <button style={{
@@ -22,4 +22,4 @@ function Notification() {
     )
 }
 
-export default Notification;
+export default Notifications;
