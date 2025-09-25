@@ -1,4 +1,3 @@
-// task_2/dashboard/NotificationItem.js
 import React from 'react';
 import PropTypes from 'prop-types';
 
