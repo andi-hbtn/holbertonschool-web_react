@@ -3,10 +3,10 @@ import './Header.css';
 
 function Header() {
     return (
-        <header className="Header">
+        <div className="Header">
             <img src={logo} className="logo" alt="Holberton logo" />
             <h1>School dashboard</h1>
-        </header>
+        </div>
     );
 }
 
