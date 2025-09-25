@@ -1,26 +1,33 @@
-import { shallow, mount } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
+import Notification from './Notification';
 import NotificationItem from './NotificationItem';
 
+describe('Testing <Notification /> component', () => {
+    const notificationsList = [
+        { id: 1, type: 'default', value: 'New course available' },
+        { id: 2, type: 'urgent', value: 'New resume available' },
+        {
+            id: 3,
+            type: 'urgent',
+            html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' },
+        },
+    ];
 
-describe('Testing <NotificationItem /> component', () => {
-    describe('NotificationItem renders without crashing', () => {
-        it ('should render NotificationItem withour crashing', () => {
-            const wrapper = shallow(<NotificationItem />);
-            expect(wrapper.exists()).toEqual(true);
-        });
+    it('renders without crashing', () => {
+        const wrapper = shallow(<Notification />);
+        expect(wrapper.exists()).toEqual(true);
     });
-    describe('Notification renders list by using props', () => {
-        it ('should render a list item with props passed', () => {
-            const wrapper = mount(<Notification type="default" value="test" />);
-            expect(wrapper.props().type).toEqual('default');
-            expect(wrapper.props().value).toEqual('test');
-        });
+
+    it('renders three NotificationItem components when passed three notifications', () => {
+        const wrapper = shallow(<Notification notifications={notificationsList} />);
+        expect(wrapper.find(NotificationItem).length).toBe(3);
     });
-    describe('Notification renders list by using html prop', () => {
-        it ('should render a list item with html prop passed', () => {
-            const wrapper = mount(<Notification type="default" html={{ __html: '<u>test</u>' }} />);
-            const list = wrapper.find('li');
-            expect(list.html()).toEqual('<li><u>test</u></li>');
-        });
+
+    it('renders the correct text inside <p>', () => {
+        const wrapper = shallow(<Notification notifications={notificationsList} />);
+        expect(wrapper.find('.Notifications p').text()).toEqual(
+            'Here is the list of notifications'
+        );
     });
-})
+});
