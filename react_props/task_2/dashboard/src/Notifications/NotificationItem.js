@@ -1,21 +1,16 @@
-// task_2/dashboard/NotificationItem.js
 import React from 'react';
 import PropTypes from 'prop-types';
 
 function NotificationItem({ type, value, html }) {
     const color = type === 'urgent' ? 'red' : 'blue';
 
-    if (html) {
-        return (
-            <li
-                data-notification-type={type}
-                style={{ color }}
-                dangerouslySetInnerHTML={html}
-            />
-        );
-    }
-
-    return (
+    return html ? (
+        <li
+            data-notification-type={type}
+            style={{ color }}
+            dangerouslySetInnerHTML={{ __html: html.__html }}
+        />
+    ) : (
         <li data-notification-type={type} style={{ color }}>
             {value}
         </li>
