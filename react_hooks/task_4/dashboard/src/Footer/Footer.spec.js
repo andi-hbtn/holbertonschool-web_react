@@ -1,18 +1,48 @@
-import { render, screen } from '@testing-library/react';
-import Footer from './Footer';
-import { getCurrentYear } from '../utils/utils';
+import { render, screen } from "@testing-library/react";
+import Footer from "./Footer";
+import AppContext from "../Context/context";
+import { getCurrentYear } from "../utils/utils";
 
-describe('Footer Component', () => {
-    test('renders copyright with current year and Holberton School when isIndex=true', () => {
+describe("Footer Component", () => {
+    it("renders copyright", () => {
         const year = getCurrentYear();
         render(<Footer />);
+        expect(
+            screen.getByText(`Copyright ${year} - Holberton School`, {
+                exact: false,
+            })
+        ).toBeInTheDocument();
+    });
 
-        // The correct text should be "Holberton School", not "Holberton School main dashboard"
-        const paragraph = screen.getByText(
-            `Copyright ${year} - Holberton School`,
-            { exact: false }
+    it("does NOT display contact link when logged out", () => {
+        const contextValue = {
+            user: { isLoggedIn: false },
+        };
+        render(
+            <AppContext.Provider value={contextValue}>
+                <Footer />
+            </AppContext.Provider>
         );
+        expect(
+            screen.queryByRole("link", { name: /contact us/i })
+        ).not.toBeInTheDocument();
+    });
 
-        expect(paragraph).toBeInTheDocument();
+    it("displays contact link when logged in", () => {
+        const contextValue = {
+            user: {
+                email: "test@test.com",
+                password: "password123",
+                isLoggedIn: true,
+            },
+        };
+        render(
+            <AppContext.Provider value={contextValue}>
+                <Footer />
+            </AppContext.Provider>
+        );
+        expect(
+            screen.getByRole("link", { name: /contact us/i })
+        ).toBeInTheDocument();
     });
 });

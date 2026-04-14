@@ -1,22 +1,40 @@
-/* eslint-disable */
-import closeIcon from "../assets/close-button.png";
-import NotificationItem from "./NotificationItem";
 import { memo } from "react";
-import "./Notifications.css";
 
-const Notifications = memo(({ id, type, html, value, markAsRead }) => {
+const NotificationItem = memo(function NotificationItem({
+  id = 0,
+  type = "default",
+  value = "",
+  html = null,
+  markAsRead = () => {},
+}) {
+  const style = {
+    color: type === "urgent" ? "red" : "blue",
+  };
 
-    console.log('notifications', value);
+  const handleClick = () => {
+    markAsRead(id);
+  };
 
+  if (html) {
     return (
-        <li key={id} className="notifications-container" onClick={() => { markAsRead(id) }}>
-            {markAsRead && (
-                <span>
-                    {value}
-                </span>
-            )}
-        </li>
+      <li
+        data-notification-type={type}
+        dangerouslySetInnerHTML={html}
+        onClick={handleClick}
+        style={style}
+      />
     );
-})
+  }
 
-export default Notifications;
+  return (
+    <li
+      data-notification-type={type}
+      onClick={handleClick}
+      style={style}
+    >
+      {value}
+    </li>
+  );
+});
+
+export default NotificationItem;

@@ -1,107 +1,155 @@
-import { useState } from "react";
+import axios from "axios";
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import CourseList from "../CourseList/CourseList";
 import "../CourseList/CourseList.css";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import { Login } from "../Login/Login";
+import Login from "../Login/Login";
 import Notifications from "../Notifications/Notifications";
 import BodySection from "../BodySection/BodySection";
 import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
+import AppContext from "../Context/context";
+import { getLatestNotification } from "../utils/utils";
 import "./App.css";
 
+function normalizeNotifications(data) {
+  const nextNotifications = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.notifications)
+      ? data.notifications
+      : [];
+
+  return nextNotifications.map((notification) =>
+    notification.html
+      ? {
+          ...notification,
+          html: { __html: getLatestNotification() },
+        }
+      : notification
+  );
+}
+
+function normalizeCourses(data) {
+  return Array.isArray(data)
+    ? data
+    : Array.isArray(data?.courses)
+      ? data.courses
+      : [];
+}
+
+function logDevelopmentError(error) {
+  if (typeof window !== "undefined" && window.location.hostname === "localhost") {
+    console.error(error);
+  }
+}
+
 const App = () => {
+  const { user: contextUser } = useContext(AppContext);
+  const removedNotificationIdsRef = useRef(new Set());
+  const [displayDrawer, setDisplayDrawer] = useState(true);
+  const [user, setUser] = useState(contextUser);
+  const [notifications, setNotifications] = useState([]);
+  const [courses, setCourses] = useState([]);
 
-  const [enableSubmit, setEnableSubmit] = useState(false);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  useEffect(() => {
+    let isMounted = true;
 
-  const handleChangeEmail = (e) => {
-    const { value, name } = e.target;
-    setFormData((prevState) => {
-      return {
-        ...prevState, [name]: value
+    const fetchNotifications = async () => {
+      try {
+        const { data } = await axios.get("/notifications.json");
+
+        if (isMounted) {
+          setNotifications(
+            normalizeNotifications(data).filter(
+              (notification) =>
+                !removedNotificationIdsRef.current.has(notification.id)
+            )
+          );
+        }
+      } catch (error) {
+        logDevelopmentError(error);
       }
-    })
-  }
+    };
 
-  const handleChangePassword = (e) => {
-    const { value, name } = e.target;
-    setFormData((prevState) => {
-      return {
-        ...prevState, [name]: value
+    fetchNotifications();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCourses = async () => {
+      try {
+        const { data } = await axios.get("/courses.json");
+
+        if (isMounted) {
+          setCourses(normalizeCourses(data));
+        }
+      } catch (error) {
+        logDevelopmentError(error);
       }
-    })
-  }
+    };
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    if (formData.password.length >= 8 && formData.email.length >= 12) {
-      setEnableSubmit(true);
-      handleLogin();
-    }
-  }
+    fetchCourses();
 
-  const [displayDrawer, setDisplayDrawer] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
-  const [notificationsList, setNotificationList] = useState([
-    { id: 1, type: "default", value: "New course available" },
-    { id: 2, type: "urgent", value: "New resume available" },
-    {
-      id: 3,
-      type: "urgent",
-      html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
-    },
-  ]);
-
-  const coursesList = [
-    { id: 1, name: "ES6", credit: "60" },
-    { id: 2, name: "Webpack", credit: "20" },
-    { id: 3, name: "React", credit: "40" },
-  ];
-
-  const handleDisplayDrawer = () => {
+  const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
-  }
+  }, []);
 
-  const handleHideDrawer = () => {
+  const handleHideDrawer = useCallback(() => {
     setDisplayDrawer(false);
-  }
+  }, []);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  const logIn = useCallback((email, password) => {
+    setUser({ email, password, isLoggedIn: true });
+  }, []);
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  }
+  const logOut = useCallback(() => {
+    setUser(contextUser);
+  }, [contextUser]);
+
+  const markNotificationAsRead = useCallback((id) => {
+    removedNotificationIdsRef.current.add(id);
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.id !== id)
+    );
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ user, logOut }),
+    [user, logOut]
+  );
 
   return (
-    <>
+    <AppContext.Provider value={contextValue}>
       <div className="notifications-header">
-        <Header isLoggedIn={isLoggedIn} formData={formData} />
+        <Header />
         <div className="root-notifications">
           <Notifications
-            notifications={notificationsList}
-            setNotificationList={setNotificationList}
+            notifications={notifications}
             displayDrawer={displayDrawer}
             handleDisplayDrawer={handleDisplayDrawer}
             handleHideDrawer={handleHideDrawer}
+            markNotificationAsRead={markNotificationAsRead}
           />
         </div>
       </div>
 
-      {isLoggedIn ? (
+      {user.isLoggedIn ? (
         <BodySectionWithMarginBottom title="Course list">
-          <CourseList courses={coursesList} onLogout={handleLogout} />
+          <CourseList courses={courses} />
         </BodySectionWithMarginBottom>
       ) : (
         <BodySectionWithMarginBottom title="Log in to continue">
-          <Login
-            formData={formData}
-            handleLoginSubmit={handleLoginSubmit}
-            handleChangeEmail={handleChangeEmail}
-            handleChangePassword={handleChangePassword}
-          />
+          <Login logIn={logIn} />
         </BodySectionWithMarginBottom>
       )}
 
@@ -110,8 +158,8 @@ const App = () => {
       </BodySection>
 
       <Footer />
-    </>
-  )
-}
+    </AppContext.Provider>
+  );
+};
 
 export default App;

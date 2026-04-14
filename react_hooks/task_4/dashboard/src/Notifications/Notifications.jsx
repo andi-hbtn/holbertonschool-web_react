@@ -1,28 +1,18 @@
-/* eslint-disable */
-import React from "react";
+import { memo } from "react";
 import closeIcon from "../assets/close-button.png";
 import NotificationItem from "./NotificationItem";
 import "./Notifications.css";
 
-const Notifications = ({ notifications, setNotificationList, displayDrawer = false, handleDisplayDrawer, handleHideDrawer, }) => {
-
-
-    const markAsRead = (id) => {
-        setNotificationList((prevState) => {
-
-            const result = prevState.filter((prev, index) => {
-                return prev.id !== id;
-            });
-            return [...result]
-        })
-    };
-
+function Notifications({
+    notifications = [],
+    displayDrawer = false,
+    handleDisplayDrawer,
+    handleHideDrawer,
+    markNotificationAsRead,
+}) {
     return (
         <div className="notifications-container">
-            <div
-                className="notification-title"
-                onClick={handleDisplayDrawer}
-            >
+            <div className="notification-title" onClick={handleDisplayDrawer}>
                 Your notifications
             </div>
 
@@ -39,7 +29,7 @@ const Notifications = ({ notifications, setNotificationList, displayDrawer = fal
                                         type={notification.type}
                                         html={notification.html}
                                         value={notification.value}
-                                        markAsRead={markAsRead}
+                                        markAsRead={markNotificationAsRead}
                                     />
                                 ))}
                             </ul>
@@ -61,4 +51,14 @@ const Notifications = ({ notifications, setNotificationList, displayDrawer = fal
     );
 }
 
-export default Notifications;
+function arePropsEqual(prevProps, nextProps) {
+    return (
+        prevProps.notifications === nextProps.notifications &&
+        prevProps.displayDrawer === nextProps.displayDrawer &&
+        prevProps.handleDisplayDrawer === nextProps.handleDisplayDrawer &&
+        prevProps.handleHideDrawer === nextProps.handleHideDrawer &&
+        prevProps.markNotificationAsRead === nextProps.markNotificationAsRead
+    );
+}
+
+export default memo(Notifications, arePropsEqual);
