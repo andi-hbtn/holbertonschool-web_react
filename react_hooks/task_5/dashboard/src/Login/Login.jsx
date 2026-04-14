@@ -1,20 +1,28 @@
-import onLogin from "../hooks/useLogin";
+import useLogin from "../hooks/useLogin";
 import "./Login.css";
 
 function Login(props) {
+
+    const {
+        formData,
+        enableSubmit,
+        handleChangeEmail,
+        handleChangePassword,
+        handleLoginSubmit
+    } = useLogin(props.logIn);
 
     return (
         <div className="App-body">
             <p>Login to access the full dashboard</p>
 
-            <form onSubmit={onLogin.handleLoginSubmit}>
+            <form onSubmit={handleLoginSubmit}>
                 <label htmlFor="email">Email</label>
                 <input
                     type="text"
                     id="email"
                     name="email"
-                    value={onLogin.formData.email}
-                    onChange={onLogin.handleChangeEmail}
+                    value={formData.email}
+                    onChange={handleChangeEmail}
                 />
 
                 <label htmlFor="password">Password</label>
@@ -22,10 +30,10 @@ function Login(props) {
                     type="password"
                     id="password"
                     name="password"
-                    value={onLogin.formData.password}
-                    onChange={onLogin.handleChangePassword}
+                    value={formData.password}
+                    onChange={handleChangePassword}
                 />
-                <input type="submit" value="OK" disabled={!onLogin.enableSubmit} />
+                <input type="submit" value="OK" disabled={!enableSubmit} />
             </form>
         </div>
     );

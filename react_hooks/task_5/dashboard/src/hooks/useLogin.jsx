@@ -1,5 +1,5 @@
 import { useState } from "react"
-const onLogin = () => {
+const useLogin = (onLogin) => {
     const [enableSubmit, setEnableSubmit] = useState(false);
     const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -53,4 +53,4 @@ const onLogin = () => {
     }
 }
 
-export default onLogin
+export default useLogin
