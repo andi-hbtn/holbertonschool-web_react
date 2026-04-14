@@ -10,6 +10,36 @@ import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBot
 import "./App.css";
 
 const App = () => {
+
+  const [enableSubmit, setEnableSubmit] = useState(false);
+  const [formData, setFormData] = useState({ email: '', password: '' });
+
+  const handleChangeEmail = (e) => {
+    const { value, name } = e.target;
+    setFormData((prevState) => {
+      return {
+        ...prevState, [name]: value
+      }
+    })
+  }
+
+  const handleChangePassword = (e) => {
+    const { value, name } = e.target;
+    setFormData((prevState) => {
+      return {
+        ...prevState, [name]: value
+      }
+    })
+  }
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    if (formData.password.length >= 8 && formData.email.length >= 12) {
+      setEnableSubmit(true);
+      handleLogin();
+    }
+  }
+
   const [displayDrawer, setDisplayDrawer] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -28,7 +58,6 @@ const App = () => {
     { id: 2, name: "Webpack", credit: "20" },
     { id: 3, name: "React", credit: "40" },
   ];
-
 
   const handleDisplayDrawer = () => {
     setDisplayDrawer(true);
@@ -49,7 +78,7 @@ const App = () => {
   return (
     <>
       <div className="notifications-header">
-        <Header />
+        <Header isLoggedIn={isLoggedIn} formData={formData} />
         <div className="root-notifications">
           <Notifications
             notifications={notificationsList}
@@ -67,7 +96,12 @@ const App = () => {
         </BodySectionWithMarginBottom>
       ) : (
         <BodySectionWithMarginBottom title="Log in to continue">
-          <Login onLogin={handleLogin} />
+          <Login
+            formData={formData}
+            handleLoginSubmit={handleLoginSubmit}
+            handleChangeEmail={handleChangeEmail}
+            handleChangePassword={handleChangePassword}
+          />
         </BodySectionWithMarginBottom>
       )}
 

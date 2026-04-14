@@ -4,38 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import "./Login.css";
 
-export function Login({ onLogin }) {
-
-    const [enableSubmit, setEnableSubmit] = useState(false);
-    const [formData, setFormData] = useState({ email: '', password: '' });
-
-    const handleChangeEmail = (e) => {
-        const { value, name } = e.target;
-        setFormData((prevState) => {
-            return {
-                ...prevState, [name]: value
-            }
-        })
-    }
-
-    const handleChangePassword = (e) => {
-        const { value, name } = e.target;
-        setFormData((prevState) => {
-            return {
-                ...prevState, [name]: value
-            }
-        })
-    }
-
-    const handleLoginSubmit = (e) => {
-        e.preventDefault();
-        if (formData.password.length >= 8 && formData.email.length >= 12) {
-            setEnableSubmit(true);
-            onLogin();
-        }
-
-
-    }
+export function Login({ formData, handleChangeEmail, handleChangePassword, handleLoginSubmit }) {
 
     return (
         <div>
