@@ -13,7 +13,7 @@ const App = () => {
   const [displayDrawer, setDisplayDrawer] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const notificationsList = [
+  const [notificationsList, setNotificationList] = useState([
     { id: 1, type: "default", value: "New course available" },
     { id: 2, type: "urgent", value: "New resume available" },
     {
@@ -21,7 +21,7 @@ const App = () => {
       type: "urgent",
       html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
     },
-  ];
+  ]);
 
   const coursesList = [
     { id: 1, name: "ES6", credit: "60" },
@@ -53,6 +53,7 @@ const App = () => {
         <div className="root-notifications">
           <Notifications
             notifications={notificationsList}
+            setNotificationList={setNotificationList}
             displayDrawer={displayDrawer}
             handleDisplayDrawer={handleDisplayDrawer}
             handleHideDrawer={handleHideDrawer}

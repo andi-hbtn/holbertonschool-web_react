@@ -4,50 +4,18 @@ import NotificationItem from "./NotificationItem";
 import { memo } from "react";
 import "./Notifications.css";
 
-const Notifications = memo(({ notifications, displayDrawer }) => {
+const Notifications = memo(({ id, type, html, value, markAsRead }) => {
 
-    const markAsRead = (id) => {
-        console.log(`Notification ${id} has been marked as read`);
-    };
+    console.log('notifications', value);
 
     return (
-        <div className="notifications-container">
-            <div className="notification-title">Your notifications</div>
-
-            {displayDrawer && (
-                <div className="notification-items">
-                    {notifications.length > 0 ? (
-                        <>
-                            <p>Here is the list of notifications</p>
-                            <ul>
-                                {notifications.map((notification) => (
-                                    <NotificationItem
-                                        key={notification.id}
-                                        id={notification.id}
-                                        type={notification.type}
-                                        html={notification.html}
-                                        value={notification.value}
-                                        markAsRead={markAsRead}
-                                    />
-                                ))}
-                            </ul>
-                        </>
-                    ) : (
-                        <p>No new notification for now</p>
-                    )}
-
-                    <button
-                        aria-label="Close"
-                        onClick={() =>
-                            console.log("Close button has been clicked")
-                        }
-                        className="close-button"
-                    >
-                        <img alt="Close Button" src={closeIcon} />
-                    </button>
-                </div>
+        <li key={id} className="notifications-container" onClick={() => { markAsRead(id) }}>
+            {markAsRead && (
+                <span>
+                    {value}
+                </span>
             )}
-        </div>
+        </li>
     );
 })
 
