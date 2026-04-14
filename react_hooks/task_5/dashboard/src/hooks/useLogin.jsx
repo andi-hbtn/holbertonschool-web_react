@@ -35,17 +35,14 @@ const useLogin = (onLogin) => {
     const handleLoginSubmit = (e) => {
         e.preventDefault();
 
-        const { email, password } = formData;
-
-        if (props.logIn) {
-            props.logIn(email, password);
+        if (onLogin) {
+            onLogin(email, password);
         }
     };
 
-    const { email, password } = formData
-
     return {
-        formData,
+        email,
+        password,
         enableSubmit,
         handleChangeEmail,
         handleChangePassword,
