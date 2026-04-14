@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Component } from "react";
 import CourseList from "../CourseList/CourseList";
 import "../CourseList/CourseList.css";
 import Footer from "../Footer/Footer";
@@ -9,77 +9,107 @@ import BodySection from "../BodySection/BodySection";
 import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
 import "./App.css";
 
-const App = () => {
-  const [displayDrawer, setDisplayDrawer] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-  this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
-  this.handleHideDrawer = this.handleHideDrawer.bind(this);
+    this.state = {
+      displayDrawer: false,
+      isLoggedIn: false,
+    };
 
-  const notificationsList = [
-    { id: 1, type: "default", value: "New course available" },
-    { id: 2, type: "urgent", value: "New resume available" },
-    {
-      id: 3,
-      type: "urgent",
-      html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
-    },
-  ];
+    this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
+    this.handleHideDrawer = this.handleHideDrawer.bind(this);
 
-  const coursesList = [
-    { id: 1, name: "ES6", credit: "60" },
-    { id: 2, name: "Webpack", credit: "20" },
-    { id: 3, name: "React", credit: "40" },
-  ];
+    this.notificationsList = [
+      { id: 1, type: "default", value: "New course available" },
+      { id: 2, type: "urgent", value: "New resume available" },
+      {
+        id: 3,
+        type: "urgent",
+        html: { __html: "<strong>Urgent requirement</strong> - complete by EOD" },
+      },
+    ];
 
+    this.coursesList = [
+      { id: 1, name: "ES6", credit: "60" },
+      { id: 2, name: "Webpack", credit: "20" },
+      { id: 3, name: "React", credit: "40" },
+    ];
 
-const handleDisplayDrawer = () => {
-  setDisplayDrawer(true);
-}
+    this.handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === "h") {
+        e.preventDefault();
+        alert("Logging you out");
+        this.props.logOut();
+      }
+    };
+  }
 
-const handleHideDrawer = () => {
-  setDisplayDrawer(false);
-}
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
 
-const handleLogin = () => {
-  setIsLoggedIn(true);
-};
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
 
-const handleLogout = () => {
-  setIsLoggedIn(false);
-}
+  handleDisplayDrawer() {
+    this.setState({ displayDrawer: true });
+  }
 
-  return (
-    <>
-      <div className="notifications-header">
-        <Header />
-        <div className="root-notifications">
-          <Notifications
-            notifications={this.notificationsList}
-            displayDrawer={this.state.displayDrawer}
-            handleDisplayDrawer={this.handleDisplayDrawer}
-            handleHideDrawer={this.handleHideDrawer}
-          />
+  handleHideDrawer() {
+    this.setState({ displayDrawer: false });
+  }
+
+  handleLogin = () => {
+    this.setState({ isLoggedIn: true });
+  };
+
+  handleLogout = () => {
+    this.setState({ isLoggedIn: false });
+  }
+
+  render() {
+    const { isLoggedIn } = this.state;
+
+    return (
+      <>
+        <div className="notifications-header">
+          <Header />
+          <div className="root-notifications">
+            <Notifications
+              notifications={this.notificationsList}
+              displayDrawer={this.state.displayDrawer}
+              handleDisplayDrawer={this.handleDisplayDrawer}
+              handleHideDrawer={this.handleHideDrawer}
+            />
+          </div>
         </div>
-      </div>
 
-      {isLoggedIn ? (
-        <BodySectionWithMarginBottom title="Course list">
-          <CourseList courses={this.coursesList} onLogout={this.handleLogout} />
-        </BodySectionWithMarginBottom>
-      ) : (
-        <BodySectionWithMarginBottom title="Log in to continue">
-          <Login onLogin={this.handleLogin} />
-        </BodySectionWithMarginBottom>
-      )}
+        {isLoggedIn ? (
+          <BodySectionWithMarginBottom title="Course list">
+            <CourseList courses={this.coursesList} onLogout={this.handleLogout} />
+          </BodySectionWithMarginBottom>
+        ) : (
+          <BodySectionWithMarginBottom title="Log in to continue">
+            <Login onLogin={this.handleLogin} />
+          </BodySectionWithMarginBottom>
+        )}
 
-      <BodySection title="News from the School">
-        <p>Holberton School News goes here</p>
-      </BodySection>
+        <BodySection title="News from the School">
+          <p>Holberton School News goes here</p>
+        </BodySection>
 
-      <Footer />
-    </>
-  )
+        <Footer />
+      </>
+    );
+  }
 }
+
+App.defaultProps = {
+  isLoggedIn: false,
+  logOut: () => { },
+};
 
 export default App;
