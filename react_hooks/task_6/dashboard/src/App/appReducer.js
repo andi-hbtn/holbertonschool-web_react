@@ -5,6 +5,8 @@ export const APP_ACTIONS = {
     MARK_NOTIFICATION_READ: "MARK_NOTIFICATION_READ",
     SET_NOTIFICATIONS: "SET_NOTIFICATIONS",
     SET_COURSES: "SET_COURSES",
+    OPEN_DRAWER: "OPEN_DRAWER",
+    CLOSE_DRAWER: "CLOSE_DRAWER",
 };
 
 export const initialState = {
@@ -59,6 +61,18 @@ export const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 courses: action.payload,
+            };
+
+        case APP_ACTIONS.OPEN_DRAWER:
+            return {
+                ...state,
+                displayDrawer: true,
+            };
+
+        case APP_ACTIONS.CLOSE_DRAWER:
+            return {
+                ...state,
+                displayDrawer: false,
             };
 
         default:

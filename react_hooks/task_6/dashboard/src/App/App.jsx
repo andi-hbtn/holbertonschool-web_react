@@ -106,19 +106,21 @@ const App = () => {
       }
     };
 
-    fetchCourses();
+    if (state.user.isLoggedIn) {
+      fetchCourses();
+    }
 
     return () => {
       isMounted = false;
     };
-  }, [state.user]);
+  }, [state.user.isLoggedIn]);
 
   const handleDisplayDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
+    dispatch({ type: APP_ACTIONS.OPEN_DRAWER });
   }, []);
 
   const handleHideDrawer = useCallback(() => {
-    dispatch({ type: APP_ACTIONS.TOGGLE_DRAWER });
+    dispatch({ type: APP_ACTIONS.CLOSE_DRAWER });
   }, []);
 
   const logIn = useCallback((email, password) => {
