@@ -32,8 +32,7 @@ export const appReducer = (state = initialState, action) => {
 
         case APP_ACTIONS.LOGOUT:
             return {
-                ...state,
-                user: initialState.user,
+                ...initialState,
             };
 
         case APP_ACTIONS.TOGGLE_DRAWER:
