@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import Notifications from "./Notifications";
 
 describe("Notifications component", () => {
-    test("renders the notifications title", () => {
+    test("renders the notifications title (case-insensitive)", () => {
         render(<Notifications />);
 
         expect(
@@ -26,22 +27,15 @@ describe("Notifications component", () => {
         expect(listItems).toHaveLength(3);
     });
 
-    test("clicking the close button logs to console", () => {
-        const logSpy = jest
-            .spyOn(console, "log")
-            .mockImplementation(() => {});
+    test("clicking the close button logs the expected message", () => {
+        const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
 
         render(<Notifications />);
 
-        const button = screen.getByRole("button", {
-            name: /close/i,
-        });
-
+        const button = screen.getByRole("button", { name: /close/i });
         fireEvent.click(button);
 
-        expect(logSpy).toHaveBeenCalledWith(
-            "Close button has been clicked"
-        );
+        expect(logSpy).toHaveBeenCalledWith("Close button has been clicked");
 
         logSpy.mockRestore();
     });
