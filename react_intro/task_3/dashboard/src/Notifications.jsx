@@ -1,7 +1,3 @@
-import "./Notifications.css";
-import closeIcon from "./assets/close-button.png";
-import { getLatestNotification } from "./utils";
-
 function Notifications() {
     const handleClick = () => {
         console.log("Close button has been clicked");
@@ -12,15 +8,20 @@ function Notifications() {
             <p>Here is the list of notifications</p>
 
             <ul>
-                <li data-priority="default">New course available</li>
+                <li data-priority="default">
+                    New course available
+                </li>
 
-                <li data-priority="urgent">New resume available</li>
+                <li data-priority="urgent">
+                    New resume available
+                </li>
 
                 <li
                     dangerouslySetInnerHTML={{
                         __html: getLatestNotification(),
                     }}
                 />
+
             </ul>
 
             <button
@@ -44,5 +45,3 @@ function Notifications() {
         </div>
     );
 }
-
-export default Notifications;

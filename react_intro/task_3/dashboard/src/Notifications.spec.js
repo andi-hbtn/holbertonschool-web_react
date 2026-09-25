@@ -21,19 +21,23 @@ describe("Notifications component", () => {
     test("renders 3 list items", () => {
         render(<Notifications />);
 
-        expect(screen.getAllByRole("listitem")).toHaveLength(3);
+        const listItems = screen.getAllByRole("listitem");
+
+        expect(listItems).toHaveLength(3);
     });
 
     test("clicking the close button logs to console", () => {
         const logSpy = jest
             .spyOn(console, "log")
-            .mockImplementation(() => { });
+            .mockImplementation(() => {});
 
         render(<Notifications />);
 
-        fireEvent.click(
-            screen.getByRole("button", { name: /close/i })
-        );
+        const button = screen.getByRole("button", {
+            name: /close/i,
+        });
+
+        fireEvent.click(button);
 
         expect(logSpy).toHaveBeenCalledWith(
             "Close button has been clicked"
